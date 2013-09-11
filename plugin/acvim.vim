@@ -1,6 +1,6 @@
 nnoremap <F5> :call RunSolution()<cr>
 nnoremap <F7> :call Compile()<cr>
-nnoremap <F9> :!executor<cr>
+nnoremap <F9> :call RunExecutor()<cr>
 nnoremap <leader>at :!addtest<cr>
 nnoremap <leader>io :call ToggleIO()<cr>
 
@@ -63,4 +63,11 @@ function Compile()
     wall
     cgetexpr system('compile')
     botright copen
+endfunction
+
+function RunExecutor()
+    let l:files = FindIONames()
+    execute 'silent !echo INPUT_NAME=' . l:files[0] ' > .acmrc'
+    execute 'silent !echo OUTPUT_NAME=' . l:files[1] ' >> .acmrc'
+    !executor
 endfunction
