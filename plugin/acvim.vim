@@ -1,5 +1,5 @@
 nnoremap <F5> :call RunSolution()<cr>
-nnoremap <F7> :cexpr system('compile')<cr>:botright copen<cr>
+nnoremap <F7> :call Compile()<cr>
 nnoremap <F9> :!executor<cr>
 nnoremap <leader>at :!addtest<cr>
 nnoremap <leader>io :call ToggleIO()<cr>
@@ -38,6 +38,7 @@ function! FindIONames()
 endfunction
 
 function! RunSolution()
+    wall
     let [l:input_file, l:output_file] = FindIONames()
     if !empty(l:input_file)
         execute 'silent !cp in ' . l:input_file
@@ -56,4 +57,10 @@ function! RunSolution()
             execute l:cur_window . "wincmd w"
         endif
     endif
+endfunction
+
+function Compile()
+    wall
+    cgetexpr system('compile')
+    botright copen
 endfunction
