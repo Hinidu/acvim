@@ -60,7 +60,7 @@ function! RunSolution()
     endif
 endfunction
 
-function Compile(silent)
+function! Compile(silent)
     wall
     cgetexpr system('compile')
     if len(getqflist())
@@ -75,7 +75,7 @@ function Compile(silent)
     return 1
 endfunction
 
-function RunExecutor()
+function! RunExecutor()
     let l:files = FindIONames()
     execute 'silent !echo INPUT_NAME=' . l:files[0] ' > .acmrc'
     execute 'silent !echo OUTPUT_NAME=' . l:files[1] ' >> .acmrc'
