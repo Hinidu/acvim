@@ -1,5 +1,5 @@
 nnoremap <F5> :call RunSolution()<cr>
-nnoremap <F7> :call Compile()<cr>
+nnoremap <F7> :call Compile(0)<cr>
 nnoremap <F9> :call RunExecutor()<cr>
 nnoremap <leader>at :!addtest<cr>
 nnoremap <leader>io :call ToggleIO()<cr>
@@ -13,7 +13,7 @@ function! ToggleIO()
     else
         let s:io_is_open = 1
         let l:cur_window = winnr()
-        botright 10 split in
+        botright 12 split in
         rightbelow vsplit out
         setlocal autoread
         execute l:cur_window . "wincmd w"
@@ -38,6 +38,9 @@ function! FindIONames()
 endfunction
 
 function! RunSolution()
+    if !Compile(1)
+        return
+    endif
     wall
     let [l:input_file, l:output_file] = FindIONames()
     if !empty(l:input_file)
@@ -59,10 +62,19 @@ function! RunSolution()
     endif
 endfunction
 
-function Compile()
+function Compile(silent)
     wall
     cgetexpr system('compile')
-    botright copen
+    if len(getqflist())
+        botright copen
+        return 0
+    else
+        cclose
+        if !a:silent
+            echom 'Successful compilation!'
+        endif
+    endif
+    return 1
 endfunction
 
 function RunExecutor()
