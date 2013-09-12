@@ -38,9 +38,7 @@ function! FindIONames()
 endfunction
 
 function! RunSolution()
-    if !Compile(1)
-        return
-    endif
+    Compile(1)
     wall
     let [l:input_file, l:output_file] = FindIONames()
     if !empty(l:input_file)
