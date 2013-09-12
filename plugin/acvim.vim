@@ -39,7 +39,7 @@ endfunction
 
 function! Compile(silent)
     wall
-    cgetexpr system('compile')
+    cgetexpr system('compile ' . bufname('*.cpp'))
     if len(getqflist())
         botright copen
         return 0
@@ -59,7 +59,7 @@ function! RunSolution()
     if !empty(l:input_file)
         execute 'silent !cp in ' . l:input_file
     endif
-    !runsolution
+    execute '!runsolution ' . substitute(bufname('*.cpp'), '\v\.cpp$', '', 'g')
     if !empty(l:input_file)
         execute 'silent !rm ' . l:input_file
     endif
