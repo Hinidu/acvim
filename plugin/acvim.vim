@@ -37,8 +37,23 @@ function! FindIONames()
         \ , FindRedirectedFile(l:preprocessed, 'stdout')]
 endfunction
 
+function! Compile(silent)
+    wall
+    cgetexpr system('compile')
+    if len(getqflist())
+        botright copen
+        return 0
+    else
+        cclose
+        if !a:silent
+            echom 'Successful compilation!'
+        endif
+    endif
+    return 1
+endfunction
+
 function! RunSolution()
-    Compile(1)
+    call Compile(1)
     wall
     let [l:input_file, l:output_file] = FindIONames()
     if !empty(l:input_file)
@@ -58,21 +73,6 @@ function! RunSolution()
             execute l:cur_window . "wincmd w"
         endif
     endif
-endfunction
-
-function! Compile(silent)
-    wall
-    cgetexpr system('compile')
-    if len(getqflist())
-        botright copen
-        return 0
-    else
-        cclose
-        if !a:silent
-            echom 'Successful compilation!'
-        endif
-    endif
-    return 1
 endfunction
 
 function! RunExecutor()
