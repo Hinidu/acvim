@@ -7,8 +7,8 @@ nnoremap <leader>io :call ToggleIO()<cr>
 let s:io_is_open = 0
 function! ToggleIO()
     if s:io_is_open
-        bdelete in
-        bdelete out
+        bunload in
+        bunload out
         let s:io_is_open = 0
     else
         let s:io_is_open = 1
@@ -23,7 +23,7 @@ endfunction
 function! FindRedirectedFile(code, type)
     let l:matches = matchlist(a:code,
                 \ '\vfreopen\(\s*"([^;]*)"\s*,[^;]*,\s*' . a:type . '\)')
-    if !empty(l:matches[1])
+    if len(l:matches) > 0 && !empty(l:matches[1])
         return substitute(l:matches[1], '\v"\s*"', '', 'g')
     else
         return ''
